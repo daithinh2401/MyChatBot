@@ -1,0 +1,14 @@
+{
+  "name": "doan_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dai Thinh",
+  "license": "ISC",
+  "dependencies": {
+    "botbuilder": "^3.7.0"
+  }
+}

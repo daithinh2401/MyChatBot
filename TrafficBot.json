@@ -1,0 +1,77 @@
+{
+  "luis_schema_version": "1.3.0",
+  "name": "DHA_Shop",
+  "desc": "",
+  "culture": "en-us",
+  "intents": [
+  	{
+	  "name": "Greetings"
+	},
+    {
+      "name": "Bye"
+    },
+    {
+      "name": "None"
+    },
+    {
+      "name": "ProductCost"
+    },
+    {
+      "name": "ProductInfo"
+    }
+  ],
+  "entities": [],
+  "composites": [],
+  "closedLists": [],
+  "bing_entities":[
+    "geography"
+  ],
+  "actions": [],
+  
+  "model_features": [
+    {
+      "name": "Show",
+      "mode": true,
+      "words": " cho biết, cho hỏi",
+      "activated": true
+    }
+  ],
+  "regex_features": [],
+  
+  
+  "utterances": [
+    {
+      "text": "Cho tôi biết giá của tai nghe samsung",
+      "intent": "ProductCost",
+      "entities": [
+        {
+          "entity": "Tai nghe",
+          "startPos": 4,
+          "endPos": 5
+        }
+      ]
+    },
+    {
+      "text": "Tai nghe samsung bao nhiêu ?",
+      "intent": "ProductCost",
+      "entities": [
+        {
+          "entity": "Tai nghe",
+          "startPos": 0,
+          "endPos": 1
+        }
+      ]
+    },
+    {
+      "text": "Sạc s6 bao nhiêu ?",
+      "intent": "ProductCost",
+      "entities": [
+        {
+          "entity": "Sạc",
+          "startPos": 0,
+          "endPos": 0
+        }
+      ]
+    }
+  ]
+}
