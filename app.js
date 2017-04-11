@@ -92,31 +92,31 @@ intent.matches('Help', [function (session) {
 		builder.Prompts.choice(session, 'Bạn cần thông tin về sản phẩm nào ? ( Vui lòng nhập đúng hoặc chọn theo số thứ tự ) ', ['Tai nghe', 'Sạc', 'Cáp', 'Đèn LED USB' , 'Kết thúc']);
     },
 	function (session, results) {
-		var luachon_1 = results.response.entity;
 		
-		if(luachon_1 == 'Tai nghe'){		
-			builder.Prompts.choice(session, 'Các loại tai nghe hiện có , hãy chọn 1 cái : ', ['Tai nghe Samsung S7', 'Tai nghe Asus', 'Kết thúc']);
-		}
-		else if(luachon_1 == 'Sạc'){
-			builder.Prompts.choice(session, 'Các loại sạc hiện có , hãy chọn 1 cái : ', ['Sạc nhanh chuẩn CE', 'Sạc 5V 2A chuẩn CE', 'Sạc nằm không dây SS' , 'Sạc đứng không dây SS', 'Kết thúc']);	
-		}
-		else if(luachon_1 == 'Cáp'){
-			builder.Prompts.choice(session, 'Các loại cáp hiện có , hãy chọn 1 cái : ', ['Cáp 1m chuẩn CE', 'Cáp 1,5m chuẩn CE', 'Kết thúc']);
-		}
-		else if(luachon_1 == 'Đèn LED USB'){
-			builder.Prompts.text( luachon_case + ' giá : 20k');	
-		}
-		else
-			session.endDialog('Rất tiếc chúng tôi chưa có sản phẩm này !');
-		
-		
+			var luachon_1 = results.response.entity;
+			
+			if(luachon_1 == 'Tai nghe'){		
+				builder.Prompts.choice(session, 'Các loại tai nghe hiện có , hãy chọn 1 cái : ', ['Tai nghe Samsung S7', 'Tai nghe Asus', 'Kết thúc']);
+			}
+			else if(luachon_1 == 'Sạc'){
+				builder.Prompts.choice(session, 'Các loại sạc hiện có , hãy chọn 1 cái : ', ['Sạc nhanh chuẩn CE', 'Sạc 5V 2A chuẩn CE', 'Sạc nằm không dây SS' , 'Sạc đứng không dây SS', 'Kết thúc']);	
+			}
+			else if(luachon_1 == 'Cáp'){
+				builder.Prompts.choice(session, 'Các loại cáp hiện có , hãy chọn 1 cái : ', ['Cáp 1m chuẩn CE', 'Cáp 1,5m chuẩn CE', 'Kết thúc']);
+			}
+			else if(luachon_1 == 'Đèn LED USB'){
+				builder.Prompts.text( luachon_1 + ' giá : 20k');	
+			}
+			
+				
+			
 		
 	},
 
 	function (session, results) {
 		var luachon_case = results.response.entity;
 		
-			if( luachon_case = 'Tai nghe Samsung S7'){
+			if( luachon_case == 'Tai nghe Samsung S7'){
 						session.endDialog( luachon_case + ' chính hãng bảo hành 6 tháng giá : 120k');
 			}
 			
