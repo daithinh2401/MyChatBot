@@ -25,7 +25,7 @@ var bot = new builder.UniversalBot(connector);
 ;
 
 
-var model = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/4c45a4f2-8d89-4756-878b-9f1660644d4a?subscription-key=c5940b22af1c4c6ea4347c211b72036c&verbose=true&timezoneOffset=0.0&q='
+var model = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/927a07ad-21ce-43f8-9044-776d720a5e8e?subscription-key=c5940b22af1c4c6ea4347c211b72036c&verbose=true&timezoneOffset=0.0&q='
 var recognizer = new builder.LuisRecognizer(model);
 var intent = new builder.IntentDialog({ recognizers: [recognizer] });
 
