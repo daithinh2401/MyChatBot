@@ -42,18 +42,35 @@ intent.matches('ProductCost' ,
 		[function (session, args, next) {
 
         // try extracting entities
-        var productHeadPhone = builder.EntityRecognizer.findEntity(args.entities, 'Tai nghe');
-		var productAdapter = builder.EntityRecognizer.findEntity(args.entities, 'Sạc');
+        var s7 = builder.EntityRecognizer.findEntity(args.entities, 'Tai nghe Samsung S7');
+		var asus = builder.EntityRecognizer.findEntity(args.entities, 'Tai nghe Asus');
+		var sacDung = builder.EntityRecognizer.findEntity(args.entities, 'Sạc đứng không dây SS');
+		var sacNam = builder.EntityRecognizer.findEntity(args.entities, 'Sạc nằm không dây SS');
+		var denLed = builder.EntityRecognizer.findEntity(args.entities, 'Đèn LED USB'); 
+		
 
 
-			if (productHeadPhone) {
-				session.dialogData.searchType = 'Tai nghe';
-				next({ response: productHeadPhone.entity });
+			if (s7) {
+				session.dialogData.searchType = 'Tai nghe Samsung S7';
+				next({ response: s7.entity });
 			}
-			else if(productAdapter){
-				session.dialogData.searchType = 'Sạc';
-				next({ response: productAdapter.entity });
+			else if(asus){
+				session.dialogData.searchType = 'Tai nghe Asus';
+				next({ response: asus.entity });
 			}
+			else if(sacDung){
+				session.dialogData.searchType = 'Sạc đứng không dây SS';
+				next({ response: sacDung.entity });
+			}
+			else if(sacNam){
+				session.dialogData.searchType = 'Sạc nằm không dây SS';
+				next({ response: sacNam.entity });
+			}
+			else if(denLed){
+				session.dialogData.searchType = 'Đèn LED USB';
+				next({ response: denLed.entity });
+			}
+			
 
 
 },
@@ -62,13 +79,26 @@ intent.matches('ProductCost' ,
 
         var message = '';
 
-        if ( session.dialogData.searchType === 'Tai nghe' ){
-			 message += ' %s Samsung chính hãng giá : 70k';
+        if ( session.dialogData.searchType === 'Tai nghe Samsung S7' ){
+			 message += ' %s chính hãng bảo hành 6 tháng giá : 70k';
 		}
 
-		else if ( session.dialogData.searchType === 'Sạc' ) {
-			message += ' %s Samsung chính hãng giá : 150k';
+		else if ( session.dialogData.searchType === 'Tai nghe Asus' ) {
+			message += ' %s chính hãng bảo hành 6 tháng giá : 100k';
 		}
+		
+		else if ( session.dialogData.searchType === 'Sạc đứng không dây SS' ) {
+			message += ' %s chính hãng bảo hành 6 tháng giá : 690k';
+		}
+		
+		else if ( session.dialogData.searchType === 'Sạc nằm không dây SS' ) {
+			message += ' %s chính hãng bảo hành 6 tháng giá : 390k';
+		}
+		
+		else if ( session.dialogData.searchType === 'Đèn LED USB' ) {
+			message += ' %s chính hãng bảo hành 6 tháng giá : 20k';
+		}
+		
 
         session.send(message , destination);
 	}
