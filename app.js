@@ -12,8 +12,8 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
    console.log('%s listening to %s', server.name, server.url); 
 });
 
-const APPID = "8c1e672e-cb8b-4e2a-8921-bc347c6c8a78";
-const APPKEY = "2aJTBjCcjFecZqdSBfUUgYs";
+const APPID = "f7fa8691-b494-4f6f-b395-e2f8d41bc9e8";
+const APPKEY = "CZNmqLtj4oTvPwRb8BZQQbt";
 
  
 // Create chat bot
