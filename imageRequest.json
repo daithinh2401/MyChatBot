@@ -1,0 +1,13 @@
+request({
+  url: "https://westus.api.cognitive.microsoft.com/vision/v1.0/analyze", // Thay bằng URL của API
+  headers: {
+    "Ocp-Apim-Subscription-Key": "123" // Thay bằng key của bạn
+  },
+  method: "POST",
+  json: true,
+  body: {
+    "url": "https://scontent.fsgn5-1.fna.fbcdn.net/v/t1.0-9/17457930_409731246059422_8397589234817480635_n.jpg?oh=0628b6715009a4537abfb8bef7c7905d&oe=598DDAE5" // Thay bằng url của hình ảnh
+  }
+}, (err, response, body) => {
+	
+});

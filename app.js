@@ -37,18 +37,18 @@ server.post('/', connector.listen());
 
 bot.dialog('/' , intent);
 
-intent.matches('ProductCost' ,
+intent.matches('ProductCost' ,[
 
-		[function (session, args, next) {
+function (session, args, next) {
 
-        // try extracting entities
-        var s7 = builder.EntityRecognizer.findEntity(args.entities, 'Tai nghe Samsung S7');
-		var asus = builder.EntityRecognizer.findEntity(args.entities, 'Tai nghe Asus');
-		var sacDung = builder.EntityRecognizer.findEntity(args.entities, 'Sạc đứng không dây SS');
-		var sacNam = builder.EntityRecognizer.findEntity(args.entities, 'Sạc nằm không dây SS');
+		
+        var s7 = builder.EntityRecognizer.findEntity(args.entities, 'Tai nghe::Tai nghe Samsung S7');	
+		var asus = builder.EntityRecognizer.findEntity(args.entities, 'Tai nghe::Tai nghe Asus');
+		var sacDung = builder.EntityRecognizer.findEntity(args.entities, 'Sạc::Sạc đứng không dây SS');
+		var sacNam = builder.EntityRecognizer.findEntity(args.entities, 'Sạc::Sạc nằm không dây SS');
 		var denLed = builder.EntityRecognizer.findEntity(args.entities, 'Đèn LED USB'); 
 		
-
+			
 
 			if (s7) {
 				session.dialogData.searchType = 'Tai nghe Samsung S7';
@@ -70,7 +70,8 @@ intent.matches('ProductCost' ,
 				session.dialogData.searchType = 'Đèn LED USB';
 				next({ response: denLed.entity });
 			}
-			
+			else
+				session.send('Tôi không hiểu hoặc shop chưa có sản phẩm này, bạn vui lòng nhập lại !');
 
 
 },
@@ -80,7 +81,7 @@ intent.matches('ProductCost' ,
         var message = '';
 
         if ( session.dialogData.searchType === 'Tai nghe Samsung S7' ){
-			 message += ' %s chính hãng bảo hành 6 tháng giá : 70k';
+			 message += ' %s chính hãng bảo hành 6 tháng giá : 120k';
 		}
 
 		else if ( session.dialogData.searchType === 'Tai nghe Asus' ) {
@@ -98,7 +99,8 @@ intent.matches('ProductCost' ,
 		else if ( session.dialogData.searchType === 'Đèn LED USB' ) {
 			message += ' %s chính hãng bảo hành 6 tháng giá : 20k';
 		}
-		
+		else 
+			message += 'ko thấy';
 
         session.send(message , destination);
 	}
@@ -117,29 +119,56 @@ intent.matches('None' , function (session){
 });
 
 
+var DialogLabels = {
+    Tainghe: 'Tai nghe',
+    Sac: 'Sạc',
+    Cap: 'Cáp',
+	Denled: 'Đèn LED USB',
+	Tais7: 'Tai nghe Samsung S7',
+	Taiasus: 'Tai nghe Asus',
+	Sacnhanh: 'Sạc nhanh chuẩn CE',
+	Sacthuong: 'Sạc 5V 2A chuẩn CE',
+	Sacnam: 'Sạc nằm không dây SS',
+	Sacdung: 'Sạc đứng không dây SS',
+	Cap1m: 'Cáp 1m chuẩn CE',
+	Cap15: 'Cáp 1,5m chuẩn CE',
+	Ketthuc: 'Kết thúc'
+	
+};
+
 
 intent.matches('Help', [function (session) {        
-		builder.Prompts.choice(session, 'Bạn cần thông tin về sản phẩm nào ? ( Vui lòng nhập đúng hoặc chọn theo số thứ tự ) ', ['Tai nghe', 'Sạc', 'Cáp', 'Đèn LED USB' , 'Kết thúc']);
+		builder.Prompts.choice(session, 'Bạn cần thông tin về sản phẩm nào ? ( Vui lòng nhập đúng hoặc chọn theo số thứ tự ) ', 
+		[DialogLabels.Tainghe , DialogLabels.Sac , DialogLabels.Cap , DialogLabels.Denled , DialogLabels.Ketthuc],
+		{
+                maxRetries: 4,
+                retryPrompt: 'Not a valid option'
+        }
+		);
     },
 	function (session, results) {
 		
 			var luachon_1 = results.response.entity;
 			
-			if(luachon_1 == 'Tai nghe'){		
+			if(luachon_1 == DialogLabels.Tainghe){		
 				builder.Prompts.choice(session, 'Các loại tai nghe hiện có , hãy chọn 1 cái : ', ['Tai nghe Samsung S7', 'Tai nghe Asus', 'Kết thúc']);
 			}
-			else if(luachon_1 == 'Sạc'){
+			else if(luachon_1 == DialogLabels.Sac){
 				builder.Prompts.choice(session, 'Các loại sạc hiện có , hãy chọn 1 cái : ', ['Sạc nhanh chuẩn CE', 'Sạc 5V 2A chuẩn CE', 'Sạc nằm không dây SS' , 'Sạc đứng không dây SS', 'Kết thúc']);	
 			}
-			else if(luachon_1 == 'Cáp'){
+			else if(luachon_1 == DialogLabels.Cap){
 				builder.Prompts.choice(session, 'Các loại cáp hiện có , hãy chọn 1 cái : ', ['Cáp 1m chuẩn CE', 'Cáp 1,5m chuẩn CE', 'Kết thúc']);
 			}
-			else if(luachon_1 == 'Đèn LED USB'){
-				builder.Prompts.text( luachon_1 + ' giá : 20k');	
+			else if(luachon_1 == DialogLabels.Denled){
+				session.endDialog( luachon_1 + ' giá : 20k');	
 			}
 			
+			else if(luachon_1 == DialogLabels.Ketthuc){
+				session.endDialog('Bạn cần giúp gì nữa không ?');
+			}
+			else
+				session.endDialog('Vui lòng nhập đúng , nhập "help" để được trợ giúp ');
 				
-			
 		
 	},
 
