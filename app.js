@@ -22,7 +22,7 @@ var connector = new builder.ChatConnector({
     appPassword: APPKEY
 });
 var bot = new builder.UniversalBot(connector);
-;
+
 
 
 var model = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/927a07ad-21ce-43f8-9044-776d720a5e8e?subscription-key=c5940b22af1c4c6ea4347c211b72036c&verbose=true&timezoneOffset=0.0&q='
@@ -31,9 +31,18 @@ var intent = new builder.IntentDialog({ recognizers: [recognizer] });
 
 server.post('/', connector.listen());
 
+//
+
 //=========================================================
 // Bots Dialogs
 //=========================================================
+
+
+
+
+/*bot.on('conversationUpdate' , function(session){	
+	session.endDialog('Chào mừng bạn đã đến với Shop - Phụ kiện điện thoại DHA , tôi là Bot trả lời tự động. Hãy nhập sản phẩm bạn cần , tôi sẽ trả lời cho bạn...... Gợi ý : nhập  " tên sản phẩm " để biết giá, nhập " tư vấn + tên sản phẩm " để nhận thông tin về sản phẩm , nhập "Help" để được trợ giúp ');
+});*/
 
 bot.dialog('/' , intent);
 
@@ -70,8 +79,9 @@ function (session, args, next) {
 				session.dialogData.searchType = 'Đèn LED USB';
 				next({ response: denLed.entity });
 			}
-			else
-				session.send('Tôi không hiểu hoặc shop chưa có sản phẩm này, bạn vui lòng nhập lại !');
+			else{
+				session.send('Tôi không hiểu hoặc shop chưa có sản phẩm này, bạn vui lòng nhập chính xác hơn !');
+			}
 
 
 },
@@ -81,23 +91,23 @@ function (session, args, next) {
         var message = '';
 
         if ( session.dialogData.searchType === 'Tai nghe Samsung S7' ){
-			 message += ' %s chính hãng bảo hành 6 tháng giá : 120k';
+			 message += ' Tai nghe Samsung S7 chính hãng bảo hành 6 tháng giá : 120k';
 		}
 
 		else if ( session.dialogData.searchType === 'Tai nghe Asus' ) {
-			message += ' %s chính hãng bảo hành 6 tháng giá : 100k';
+			message += ' Tai nghe Asus chính hãng bảo hành 6 tháng giá : 100k';
 		}
 		
-		else if ( session.dialogData.searchType === 'Sạc đứng không dây SS' ) {
-			message += ' %s chính hãng bảo hành 6 tháng giá : 690k';
+		else if ( session.dialogData.searchType === 'Sạc đứng không dây Samsung' ) {
+			message += ' Sạc đứng không dây Samsung chính hãng bảo hành 6 tháng giá : 690k';
 		}
 		
 		else if ( session.dialogData.searchType === 'Sạc nằm không dây SS' ) {
-			message += ' %s chính hãng bảo hành 6 tháng giá : 390k';
+			message += ' Sạc nằm không dây Samsung chính hãng bảo hành 6 tháng giá : 390k';
 		}
 		
 		else if ( session.dialogData.searchType === 'Đèn LED USB' ) {
-			message += ' %s chính hãng bảo hành 6 tháng giá : 20k';
+			message += ' Đèn LED USB chính hãng bảo hành 6 tháng giá : 20k';
 		}
 		else 
 			message += 'ko thấy';
@@ -136,7 +146,6 @@ var DialogLabels = {
 	
 };
 
-
 intent.matches('Help', [function (session) {        
 		builder.Prompts.choice(session, 'Bạn cần thông tin về sản phẩm nào ? ( Vui lòng nhập đúng hoặc chọn theo số thứ tự ) ', 
 		[DialogLabels.Tainghe , DialogLabels.Sac , DialogLabels.Cap , DialogLabels.Denled , DialogLabels.Ketthuc],
@@ -151,13 +160,13 @@ intent.matches('Help', [function (session) {
 			var luachon_1 = results.response.entity;
 			
 			if(luachon_1 == DialogLabels.Tainghe){		
-				builder.Prompts.choice(session, 'Các loại tai nghe hiện có , hãy chọn 1 cái : ', ['Tai nghe Samsung S7', 'Tai nghe Asus', 'Kết thúc']);
+				builder.Prompts.choice(session, 'Các loại tai nghe hiện có , hãy chọn 1 cái : ', [DialogLabels.Tais7, DialogLabels.Taiasus, DialogLabels.Ketthuc]);
 			}
 			else if(luachon_1 == DialogLabels.Sac){
-				builder.Prompts.choice(session, 'Các loại sạc hiện có , hãy chọn 1 cái : ', ['Sạc nhanh chuẩn CE', 'Sạc 5V 2A chuẩn CE', 'Sạc nằm không dây SS' , 'Sạc đứng không dây SS', 'Kết thúc']);	
+				builder.Prompts.choice(session, 'Các loại sạc hiện có , hãy chọn 1 cái : ', [DialogLabels.Sacnhanh, DialogLabels.Sacthuong, DialogLabels.Sacnam , DialogLabels.Sacdung, DialogLabels.Ketthuc]);	
 			}
 			else if(luachon_1 == DialogLabels.Cap){
-				builder.Prompts.choice(session, 'Các loại cáp hiện có , hãy chọn 1 cái : ', ['Cáp 1m chuẩn CE', 'Cáp 1,5m chuẩn CE', 'Kết thúc']);
+				builder.Prompts.choice(session, 'Các loại cáp hiện có , hãy chọn 1 cái : ', [DialogLabels.Cap1m, DialogLabels.Cap15, DialogLabels.Ketthuc]);
 			}
 			else if(luachon_1 == DialogLabels.Denled){
 				session.endDialog( luachon_1 + ' giá : 20k');	
@@ -167,7 +176,7 @@ intent.matches('Help', [function (session) {
 				session.endDialog('Bạn cần giúp gì nữa không ?');
 			}
 			else
-				session.endDialog('Vui lòng nhập đúng , nhập "help" để được trợ giúp ');
+				session.endDialog('Chúng tôi chưa có sản phẩm này, vui lòng kiểm tra lại đã nhập chính xác chưa , nhập "help" để được trợ giúp ');
 				
 		
 	},
@@ -175,49 +184,52 @@ intent.matches('Help', [function (session) {
 	function (session, results) {
 		var luachon_case = results.response.entity;
 		
-			if( luachon_case == 'Tai nghe Samsung S7'){
+			if( luachon_case == DialogLabels.Tais7){
 						session.endDialog( luachon_case + ' chính hãng bảo hành 6 tháng giá : 120k');
 			}
 			
 			
-			else if( luachon_case == 'Tai nghe Asus'){
+			else if( luachon_case == DialogLabels.Taiasus){
 						session.endDialog( luachon_case + ' chính hãng bảo hành 6 tháng giá : 100k');
 			}
 			
 			
-			else if( luachon_case == 'Sạc nhanh chuẩn CE'){
+			else if( luachon_case == DialogLabels.Sacnhanh){
 						session.endDialog( luachon_case + ' chính hãng bảo hành 6 tháng giá : 120k');
 			}
 			
 			
-			else if( luachon_case == 'Sạc 5V 2A chuẩn CE'){
+			else if( luachon_case == DialogLabels.Sacthuong){
 						session.endDialog( luachon_case + ' chính hãng bảo hành 6 tháng giá : 80k');
 			}
 			
 			
-			else if( luachon_case == 'Sạc nằm không dây SS'){
+			else if( luachon_case == DialogLabels.Sacnam){
 						session.endDialog( luachon_case + ' chính hãng bảo hành 6 tháng giá : 390k');
 			}
 			
 			
-			else if( luachon_case == 'Sạc đứng không dây SS'){
+			else if( luachon_case == DialogLabels.Sacdung){
 						session.endDialog( luachon_case + ' chính hãng bảo hành 6 tháng giá : 690k');
 			}
 					
-			else if( luachon_case == 'Cáp 1m chuẩn CE'){
+			else if( luachon_case == DialogLabels.Cap1m){
 						session.endDialog( luachon_case1 + ' chính hãng bảo hành 6 tháng giá : 50k');
 			}
 			
 			
-			else if( luachon_case == 'Cáp 1,5m chuẩn CE'){
+			else if( luachon_case == DialogLabels.Cap15){
 						session.endDialog( luachon_case1 + ' chính hãng bảo hành 6 tháng giá : 60k');
 			}		
 			
-			else 
+			else if( luachon_case == DialogLabels.Ketthuc)
 						session.endDialog('Bạn cần giúp gì nữa không ?');
+					
+			else
+						session.endDialog('Chúng tôi chưa có sản phẩm này, vui lòng kiểm tra lại đã nhập chính xác chưa , nhập "help" để được trợ giúp ');
 									
 		}
-		]);
+	]);
 
 
 
