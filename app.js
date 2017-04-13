@@ -373,10 +373,8 @@ intent.matches('None' , function (session , args){
 	var thongminh = builder.EntityRecognizer.findEntity(args.entities , 'Ability::Thông minh');
 	var soaica = builder.EntityRecognizer.findEntity(args.entities , 'Ability::Soái ca');
 	
-	if(dt && !deptrai && !thongminh &&soaica){
-		session.send('Anh Đại Thịnh cực kì đẹp trai , thông minh , đúng chuẩn Soái ca luônnnnnn !');
-	}
-	else if (dt && deptrai){
+	
+	if (dt && deptrai){
 		session.send('Quá đẹp luôn , Brad Pitt còn phải gọi anh Thịnh bằng cụ :))) !');
 	}
 	else if (dt && thongminh){
@@ -384,6 +382,10 @@ intent.matches('None' , function (session , args){
 	}
 	else if (dt && soaica){
 		session.send('Chốt 1 câu thôi , anh Thịnh chuẩn Soái ca !');
+	}
+	
+	else if(dt){
+		session.send('Anh Đại Thịnh cực kì đẹp trai , thông minh , đúng chuẩn Soái ca luônnnnnn !');
 	}
 	
 	else {
