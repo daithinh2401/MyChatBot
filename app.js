@@ -172,7 +172,7 @@ intent.matches('ProductInfo' ,
 			var msg = new builder.Message(session).addAttachment(card_asus);
 			session.endDialog(msg);
 			session.send('Tai nghe Asus chính hãng, bảo hành 6 tháng, 1 đổi 1 nếu có lỗi, giá bán lẻ 100k... Nếu cần mua sỉ vui lòng liên hệ trực tiếp SĐT hoặc để lại lời nhắn ^^');
-			session('Hiện tại sản phẩm Tai nghe Asus đang hết hàng, mong bạn thông cảm ^^');
+			session.send('Hiện tại sản phẩm Tai nghe Asus đang hết hàng, mong bạn thông cảm ^^');
 		}
 		
 		else if(sacDung){
