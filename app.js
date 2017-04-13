@@ -320,7 +320,7 @@ function (session, args, next) {
 		}
 
 		else if ( session.dialogData.searchType === 'tai asus' ) {
-			message += ' Tai nghe Asus chính hãng giá : 100k' , ( tình trạng : hết hàng ) , vui lòng liên hệ Shop để trao đổi giá sỉ nếu bạn cần ^^;
+			message += ' Tai nghe Asus chính hãng giá : 100k , ( tình trạng : hết hàng ) , vui lòng liên hệ Shop để trao đổi giá sỉ nếu bạn cần ^^';
 		}
 		
 		else if ( session.dialogData.searchType === 'sacDung' ) {
