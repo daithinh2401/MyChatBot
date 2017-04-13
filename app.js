@@ -30,15 +30,15 @@ var link_denLed = "https://www.facebook.com/PhukienDHA9x/";
 var card_s7,card_asus,card_sacDung,card_sacNam,card_sacNhanh,card_sacThuong,card_cap1m,card_cap15m,card_denLed;
 
 function taoCard(session){
-	card_s7 = createHeroCard(session , 'Tai nghe Samsung S7 chính hãng , bảo hành 6 tháng , giá 120k... \r\n 1 đổi 1 trong 7 ngày nếu có lỗi từ nhà sản xuất.\f Liên hệ : 01208510764' , image_S7 , link_S7);
-	card_asus = createHeroCard(session , 'Tai nghe Asus chính hãng , bảo hành 6 tháng , giá 100k... \r\n 1 đổi 1 trong 7 ngày nếu có lỗi từ nhà sản xuất.\f Liên hệ : 01208510764' , image_asus , link_asus);;
-	card_sacDung = createHeroCard(session , 'Sạc không dây Samsung S7 , bảo hành 6 tháng , giá 690k... \r\n 1 đổi 1 trong 7 ngày nếu có lỗi từ nhà sản xuất.\f Liên hệ : 01208510764' , image_sacDung , link_sacDung);
-	card_sacNam = createHeroCard(session , 'Sạc không dây Samsung S6, bảo hành 6 tháng , giá 390k... \r\n 1 đổi 1 trong 7 ngày nếu có lỗi từ nhà sản xuất.\f Liên hệ : 01208510764' , image_sacNam , link_sacNam);
-	card_sacNhanh = createHeroCard(session , 'Sạc nhanh Samsung chuẩn CE , bảo hành 6 tháng , giá 120k... \r\n 1 đổi 1 trong 7 ngày nếu có lỗi từ nhà sản xuất.\f Liên hệ : 01208510764' , image_sacNhanh , link_sacNhanh);
-	card_sacThuong = createHeroCard(session , 'Sạc Samsung 5V 2A chuẩn CE bảo hành 6 tháng , giá 80k... \r\n 1 đổi 1 trong 7 ngày nếu có lỗi từ nhà sản xuất.\f Liên hệ : 01208510764' , image_sacThuong , link_sacThuong);
-	card_cap1m = createHeroCard(session , 'Cáp USB chính hãng dài 1m bảo hành 6 tháng , giá 50k... \r\n 1 đổi 1 trong 7 ngày nếu có lỗi từ nhà sản xuất.\f Liên hệ : 01208510764' , image_cap1m , link_cap1m);
-	card_cap15m = createHeroCard(session , 'Cáp USB chính hãng dài 1,5m bảo hành 6 tháng , giá 60k... \r\n 1 đổi 1 trong 7 ngày nếu có lỗi từ nhà sản xuất.\f Liên hệ : 01208510764' , image_cap15m , link_cap15m);
-	card_denLed= createHeroCard(session , 'Đèn LED USB bảo hành 6 tháng , giá 20k... \r\n 1 đổi 1 trong 7 ngày nếu có lỗi từ nhà sản xuất.\f Liên hệ : 01208510764' , image_denLed , link_denLed);
+	card_s7 = createHeroCard(session , 'Tai nghe Samsung S7 chính hãng....Liên hệ : 01208510764' , image_S7 , link_S7);
+	card_asus = createHeroCard(session , 'Tai nghe Asus chính hãng... Liên hệ : 01208510764' , image_asus , link_asus);;
+	card_sacDung = createHeroCard(session , 'Sạc không dây Samsung S7 ...Liên hệ : 01208510764' , image_sacDung , link_sacDung);
+	card_sacNam = createHeroCard(session , 'Sạc không dây Samsung S6 ... Liên hệ : 01208510764' , image_sacNam , link_sacNam);
+	card_sacNhanh = createHeroCard(session , 'Sạc nhanh Samsung chuẩn CE ... Liên hệ : 01208510764' , image_sacNhanh , link_sacNhanh);
+	card_sacThuong = createHeroCard(session , 'Sạc Samsung 5V 2A chuẩn CE ... Liên hệ : 01208510764' , image_sacThuong , link_sacThuong);
+	card_cap1m = createHeroCard(session , 'Cáp USB chính hãng dài 1m ... Liên hệ : 01208510764' , image_cap1m , link_cap1m);
+	card_cap15m = createHeroCard(session , 'Cáp USB chính hãng dài 1,5m ... Liên hệ : 01208510764' , image_cap15m , link_cap15m);
+	card_denLed= createHeroCard(session , 'Đèn LED USB bảo hành 6 tháng , giá 20k... Liên hệ : 01208510764' , image_denLed , link_denLed);
 }
 
 function taobienentity(args){
@@ -121,13 +121,25 @@ intent.matches('ProductInfo' ,
 		taobienentity(args);
 		taoCard(session);
 		
-		if(tainghe){
+		var bh = builder.EntityRecognizer.findEntity(args.entities , 'Bảo hành');
+		var loi =  builder.EntityRecognizer.findEntity(args.entities , 'Lỗi');
+		
+		if(bh){
+			session.send('Tất cả sản phẩm của Shop đều được bảo hành 6 tháng kể từ ngày mua, thông tin địa chỉ bạn xem trên Trang của Shop nhé ^^');
+		}
+		
+		else if(loi){
+			session.send('Mọi sản phẩm khi bị lỗi đều được 1 đổi 1 trong vòng 7 ngày sau khi mua, nếu qua thời hạn đổi, bạn vẫn có thể đem sản phẩm tới Shop để bảo hành nếu có lỗi trong vòng 6 tháng, Shop cố gắng hỗ trợ bạn thật tốt ^^');
+		}
+		
+		else if(tainghe){
 			var cards = getCardGroup_TaiNghe();
 			var reply = new builder.Message(session)
 							.attachmentLayout(builder.AttachmentLayout.carousel)
 							.attachments(cards);
 
 			session.send(reply);
+			session.send('Shop mình đang kinh doanh 2 loại tai nghe chính hãng Samsung và Asus, hiện tại tai nghe Asus đang hết hàng, bạn thông cảm nhé ^^');
 		}
 		
 		else if(sac){
@@ -137,6 +149,7 @@ intent.matches('ProductInfo' ,
 							.attachments(cards);
 
 			session.send(reply);
+			session.send('Các loại Sạc Shop mình đang kinh doanh , mời bạn ủng hộ nhé ^^');
 		}
 		
 		else if(cap){
@@ -146,51 +159,62 @@ intent.matches('ProductInfo' ,
 							.attachments(cards);
 
 			session.send(reply);
+			session.send('Shop mình hiện có 2 loại Cáp chiều dài 1m và 1,5m , mời bạn ủng hộ nhé ^^');
 		}
 		
 		else if(s7){		
 			var msg = new builder.Message(session).addAttachment(card_s7);
 			session.endDialog(msg);
+			session.send('Tai nghe Samsung S7 chính hãng, bảo hành 6 tháng, 1 đổi 1 nếu có lỗi, giá bán lẻ 120k... Nếu cần mua sỉ vui lòng liên hệ trực tiếp SĐT hoặc để lại lời nhắn ^^');
 		}
 		
 		else if(asus){		
 			var msg = new builder.Message(session).addAttachment(card_asus);
 			session.endDialog(msg);
+			session.send('Tai nghe Asus chính hãng, bảo hành 6 tháng, 1 đổi 1 nếu có lỗi, giá bán lẻ 100k... Nếu cần mua sỉ vui lòng liên hệ trực tiếp SĐT hoặc để lại lời nhắn ^^');
+			session('Hiện tại sản phẩm Tai nghe Asus đang hết hàng, mong bạn thông cảm ^^');
 		}
 		
 		else if(sacDung){
 			var msg = new builder.Message(session).addAttachment(card_sacDung);
 			session.endDialog(msg);
+			session.send('Sạc không dây Samsung S6 chính hãng, bảo hành 6 tháng, 1 đổi 1 nếu có lỗi, giá bán lẻ 690k... Nếu cần mua sỉ vui lòng liên hệ trực tiếp SĐT hoặc để lại lời nhắn ^^');
 		}
 		
 		else if(sacNam){
 			var msg = new builder.Message(session).addAttachment(card_sacNam);
 			session.endDialog(msg);
+			session.send('Sạc không dây S7 chính hãng, bảo hành 6 tháng, 1 đổi 1 nếu có lỗi, giá bán lẻ 390k... Nếu cần mua sỉ vui lòng liên hệ trực tiếp SĐT hoặc để lại lời nhắn ^^');
 		}
 		
 		else if(sacNhanh){
 			var msg = new builder.Message(session).addAttachment(card_sacNhanh);
 			session.endDialog(msg);
+			session.send('Củ sạc nhanh Samsung chính hãng, bảo hành 6 tháng, 1 đổi 1 nếu có lỗi, giá bán lẻ 120k... Nếu cần mua sỉ vui lòng liên hệ trực tiếp SĐT hoặc để lại lời nhắn ^^');
 		}
 		
 		else if(sacThuong){	
 			var msg = new builder.Message(session).addAttachment(card_sacThuong);
 			session.endDialog(msg);
+			session.send('Củ sạc 5V 2A Samsung chính hãng, bảo hành 6 tháng, 1 đổi 1 nếu có lỗi, giá bán lẻ 120k... Nếu cần mua sỉ vui lòng liên hệ trực tiếp SĐT hoặc để lại lời nhắn ^^');
 		}
 		
 		else if(cap1m){
 			var msg = new builder.Message(session).addAttachment(card_cap1m);
 			session.endDialog(msg);
+			session.send('Dây cáp Samsung 1m, bảo hành 6 tháng, 1 đổi 1 nếu có lỗi, giá bán lẻ 120k... Nếu cần mua sỉ vui lòng liên hệ trực tiếp SĐT hoặc để lại lời nhắn ^^');
 		}
 		
 		else if(cap15m){
 			var msg = new builder.Message(session).addAttachment(card_cap15m);
 			session.endDialog(msg);
+			session.send('Dây cáp Samsung 1,5m, bảo hành 6 tháng, 1 đổi 1 nếu có lỗi, giá bán lẻ 120k... Nếu cần mua sỉ vui lòng liên hệ trực tiếp SĐT hoặc để lại lời nhắn ^^');
 		}
 		
 		else if(denLed){		
 			var msg = new builder.Message(session).addAttachment(card_denLed);
 			session.endDialog(msg);
+			session.send('Đèn LED USB,  bảo hành 6 tháng, 1 đổi 1 nếu có lỗi, giá bán lẻ 120k... Nếu cần mua sỉ vui lòng liên hệ trực tiếp SĐT hoặc để lại lời nhắn ^^');
 		}
 		
 		else
@@ -206,7 +230,9 @@ intent.matches('ProductCost' ,[
 
 function (session, args, next) {
 		
+	
 		taobienentity(args);
+		
 		
 		if(tainghe && !s7 && !asus){
 			session.dialogData.searchType = 'tainghe';
@@ -282,7 +308,7 @@ function (session, args, next) {
 		}
 
 		else if ( session.dialogData.searchType === 'sac' ){
-			builder.Prompts.choice(session , 'Bạn cần loại Sacj nào ? Chúng tôi có 4 loại : ' , [DialogLabels.Sacdung , DialogLabels.Sacnam , DialogLabels.Sacnhanh ,DialogLabels.Sacthuong , DialogLabels.Ketthuc ]);
+			builder.Prompts.choice(session , 'Bạn cần loại Sạc nào ? Chúng tôi có 4 loại : ' , [DialogLabels.Sacdung , DialogLabels.Sacnam , DialogLabels.Sacnhanh ,DialogLabels.Sacthuong , DialogLabels.Ketthuc ]);
 		}
 
 		else if ( session.dialogData.searchType === 'cap' ) {
@@ -290,35 +316,35 @@ function (session, args, next) {
 		}
 
         else if ( session.dialogData.searchType === 'tai s7' ){
-			 message += ' Tai nghe Samsung S7 chính hãng giá : 120k';
+			 message += ' Tai nghe Samsung S7 chính hãng giá bán lẻ : 120k , ( tình trạng : còn hàng ) , vui lòng liên hệ Shop để trao đổi giá sỉ nếu bạn cần ^^';
 		}
 
 		else if ( session.dialogData.searchType === 'tai asus' ) {
-			message += ' Tai nghe Asus chính hãng giá : 100k';
+			message += ' Tai nghe Asus chính hãng giá : 100k' , ( tình trạng : hết hàng ) , vui lòng liên hệ Shop để trao đổi giá sỉ nếu bạn cần ^^;
 		}
 		
 		else if ( session.dialogData.searchType === 'sacDung' ) {
-			message += ' Sạc đứng không dây Samsung chính hãng giá : 690k';
+			message += ' Sạc đứng không dây Samsung chính hãng giá : 690k, ( tình trạng : còn hàng ) , vui lòng liên hệ Shop để trao đổi giá sỉ nếu bạn cần ^^';
 		}
 		
 		else if ( session.dialogData.searchType === 'sacNam' ) {
-			message += ' Sạc nằm không dây Samsung chính hãng giá : 390k';
+			message += ' Sạc nằm không dây Samsung chính hãng giá : 390k, ( tình trạng : còn hàng ) , vui lòng liên hệ Shop để trao đổi giá sỉ nếu bạn cần ^^';
 		}
 		
 		else if ( session.dialogData.searchType === 'sacNhanh' ) {
-			message += ' Sạc nhanh chuẩn CE chính hãng giá : 120k';
+			message += ' Sạc nhanh chuẩn CE chính hãng giá : 120k, ( tình trạng : còn hàng ) , vui lòng liên hệ Shop để trao đổi giá sỉ nếu bạn cần ^^';
 		}
 		
 		else if ( session.dialogData.searchType === 'sacThuong' ) {
-			message += ' Sạc 5V 2A chuẩn CE chính hãng giá : 80k';
+			message += ' Sạc 5V 2A chuẩn CE chính hãng giá : 80k, ( tình trạng : còn hàng ) , vui lòng liên hệ Shop để trao đổi giá sỉ nếu bạn cần ^^';
 		}
 		
 		else if ( session.dialogData.searchType === 'cap1m' ) {
-			message += ' Dây cáp 1m chính hãng giá : 50k';
+			message += ' Dây cáp 1m chính hãng giá : 50k, ( tình trạng : còn hàng ) , vui lòng liên hệ Shop để trao đổi giá sỉ nếu bạn cần ^^';
 		}
 		
 		else if ( session.dialogData.searchType === 'cap15m' ) {
-			message += ' Dây cáp 1,5m chính hãng giá : 60k';
+			message += ' Dây cáp 1,5m chính hãng giá : 60k, ( tình trạng : còn hàng ) , vui lòng liên hệ Shop để trao đổi giá sỉ nếu bạn cần ^^';
 		}
 		
 		else 
@@ -334,13 +360,13 @@ function (session, args, next) {
 
 
 intent.matches('Greetings' , function (session){
-	session.send('Xin chào ! Tôi có thể giúp gì cho bạn ?');
+	session.send('Chào bạn đến với Shop - Phụ kiện điện thoại DHA , tôi là Bot tự động trả lời, bạn cần hỏi về sản phẩm nào ? Tôi sẽ trả lời bạn, trường hợp những câu tôi không thể giải đáp thì Nhân viên sẽ liên hệ với bạn lại sớm nhất có thể !');
 });
 intent.matches('Bye' , function (session){
-	session.send('Tạm biệt, hẹn gặp lại !');
+	session.send('Cám ơn bạn đã ủng hộ !');
 });
 intent.matches('None' , function (session){
-	session.send('Tôi tạm thời chưa hiểu !');
+	session.send('Bot tạm thời chưa thể trả lời câu này !');
 });
 
 
