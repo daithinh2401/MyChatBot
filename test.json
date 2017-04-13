@@ -1,0 +1,13 @@
+[
+	{
+			"text": "tai nghe s7 giá bao nhiêu ?",
+			"intent": "ProductCost",
+			"entities": 
+			[
+			{
+				"entity": "Tai nghe::Tai nghe Samsung S7",
+				"startPos": 0,
+				"endPos": 11
+			}		
+	}
+]
