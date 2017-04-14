@@ -367,30 +367,7 @@ intent.matches('Bye' , function (session){
 });
 
 intent.matches('None' , function (session , args){
-	
-	var dt = builder.EntityRecognizer.findEntity(args.entities , 'Đại Thịnh');
-	var deptrai = builder.EntityRecognizer.findEntity(args.entities , 'Ability::Đẹp trai');
-	var thongminh = builder.EntityRecognizer.findEntity(args.entities , 'Ability::Thông minh');
-	var soaica = builder.EntityRecognizer.findEntity(args.entities , 'Ability::Soái ca');
-	
-	
-	if (dt && deptrai){
-		session.send('Quá đẹp luôn , Brad Pitt còn phải gọi anh Thịnh bằng cụ :))) !');
-	}
-	else if (dt && thongminh){
-		session.send('Anh Thịnh thông minh số dách luôn !');
-	}
-	else if (dt && soaica){
-		session.send('Chốt 1 câu thôi , anh Thịnh chuẩn Soái ca !');
-	}
-	
-	else if(dt){
-		session.send('Anh Đại Thịnh cực kì đẹp trai , thông minh , đúng chuẩn Soái ca luônnnnnn !');
-	}
-	
-	else {
 		session.send('Bot tạm thời chưa thể trả lời câu này !');
-	}
 });
 
 
