@@ -27,7 +27,7 @@ var link_cap15m = "https://www.facebook.com/PhukienDHA9x/photos/pcb.423728131326
 var image_denLed = "http://mytholaptop.vn/uploads/html/images/0915793den_led_usb_sieu_sang_sieu_ben_1m4g3_82e56a_simg_d0daf0_800x1200_max.jpg";
 var link_denLed = "https://www.facebook.com/PhukienDHA9x/";
 
-var card_s7,card_asus,card_sacDung,card_sacNam,card_sacNhanh,card_sacThuong,card_cap1m,card_cap15m,card_denLed;
+var card_s7,card_asus,card_sacDung,card_sacNam,card_sacNhanh,card_sacThuong,card_cap1m,card_cap15m,card_denLed,number;
 
 function taoCard(session){
 	card_s7 = createHeroCard(session , 'Tai nghe Samsung S7 chính hãng....Liên hệ : 01208510764' , image_S7 , link_S7);
@@ -56,8 +56,13 @@ function taobienentity(args){
 	cap1m = builder.EntityRecognizer.findEntity(args.entities, 'Cáp::Cáp 1m chuẩn CE');
 	cap15m = builder.EntityRecognizer.findEntity(args.entities, 'Cáp::Cáp 1,5m chuẩn CE');
 	denLed = builder.EntityRecognizer.findEntity(args.entities, 'Đèn LED USB');
+	
+	number = builder.EntityRecognizer.findEntity(args.entities , 'builtin.number');
 
 }
+
+var tenNguoiDat = '';
+var sdt = '';
 
 
 //=========================================================
@@ -87,6 +92,7 @@ var model = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/927a07ad-
 var recognizer = new builder.LuisRecognizer(model);
 var intent = new builder.IntentDialog({ recognizers: [recognizer] });
 
+
 server.post('/', connector.listen());
 
 //
@@ -95,14 +101,13 @@ server.post('/', connector.listen());
 // Bots Dialogs
 //=========================================================
 
-
+bot.dialog('/' , intent);
 
 
 /*bot.on('conversationUpdate' , function(session){	
 	session.endDialog('Chào mừng bạn đã đến với Shop - Phụ kiện điện thoại DHA , tôi là Bot trả lời tự động. Hãy nhập sản phẩm bạn cần , tôi sẽ trả lời cho bạn...... Gợi ý : nhập  " tên sản phẩm " để biết giá, nhập " tư vấn + tên sản phẩm " để nhận thông tin về sản phẩm , nhập "Help" để được trợ giúp ');
 });*/
 
-bot.dialog('/' , intent);
 
 function getCardGroup_TaiNghe(session){
 	return [card_s7,card_asus];
@@ -430,8 +435,7 @@ intent.matches('Help', [function (session) {
 
 function duaraluachon(session , results){
 	var luachon_case = results.response.entity;
-		
-			
+					
 			if( luachon_case == DialogLabels.Tais7){
 						session.endDialog( luachon_case + ' chính hãng giá : 120k');
 			}
@@ -477,6 +481,185 @@ function duaraluachon(session , results){
 						session.endDialog('Chúng tôi chưa có sản phẩm này, vui lòng kiểm tra lại đã nhập chính xác chưa , nhập "help" để được trợ giúp ');
 									
 	}
+	
+	
+	
+function createReceiptCard(session , tenNguoiDat , sdt, tenSp, giaSp , soluong , img) {
+    return new builder.ReceiptCard(session)
+        .title(tenNguoiDat)
+        .facts([
+            builder.Fact.create(session, sdt , 'Điện thoại : '),
+            builder.Fact.create(session, 'Thanh toán khi nhận hàng', 'Hình thức : ')
+        ])
+        .items([
+		    builder.ReceiptItem.create(session, 'Giá', 'S.lượng ', 'Tên sản phẩm')
+				.quantity('S.lượng'),
+            builder.ReceiptItem.create(session, giaSp + ' K', soluong , tenSp)
+				.quantity(soluong)
+                .image(builder.CardImage.create(session, img))
+        ])
+        .total(giaSp * soluong + ' K');
+}
+
+
+intent.matches('SignUp' , [
+	function(session)
+	{
+		builder.Prompts.text(session , 'Bạn vui lòng cho Shop biết tên của bạn nhé ^^');
+	},
+	function(session , results)
+	{
+		tenNguoiDat = results.response;
+		builder.Prompts.text(session , 'Xin chào ' + results.response + ' , cho mình xin sđt để liên hệ nhé ^^');
+	},
+	function(session , results)
+	{
+		sdt = results.response;
+		session.endDialog('Xong rồi , bây giờ bạn có thể đặt hàng dựa trên thông tin bạn đã nhập , sau đó Shop sẽ liên hệ lại nhé.');
+	}]
+);
+	
+intent.matches('Order' , [
+
+	function(session ,args){
+		taobienentity(args);
+		
+		if(tenNguoiDat == '' && sdt == '')
+		{
+			session.endDialog('Vui lòng cho biết thông tin của bạn trước khi đặt hàng bằng cách nhập : "Đăng kí"');
+		}
+		else
+		{
+			if(number && s7)
+			{
+				var orderCard = createReceiptCard(session , tenNguoiDat , sdt , 'Tai nghe Samsung S7' , 120 , number.entity , image_S7 );
+				var msg = new builder.Message(session).addAttachment(orderCard);
+				session.send(msg);
+				builder.Prompts.text(session , 'Vui lòng xem lại bảng đặt hàng và xác nhận bằng cách gõ bất kì , nếu có sai sót hoặc muốn hủy , vui lòng nhập "Hủy"');
+			}
+			else if(number && asus)
+			{
+				var orderCard = createReceiptCard(session , tenNguoiDat , sdt , 'Tai nghe Asus' , 100 , number.entity , image_asus );
+				var msg = new builder.Message(session).addAttachment(orderCard);
+				session.send(msg);		
+				builder.Prompts.text(session , 'Vui lòng xem lại bảng đặt hàng và xác nhận bằng cách gõ bất kì , nếu có sai sót hoặc muốn hủy , vui lòng nhập "Hủy"');
+			}
+			else if(number && sacDung)
+			{
+				var orderCard = createReceiptCard(session , tenNguoiDat , sdt , 'Sạc không dây S7/S7 Edge' , 690 , number.entity , image_sacDung );
+				var msg = new builder.Message(session).addAttachment(orderCard);
+				session.send(msg);
+				builder.Prompts.text(session , 'Vui lòng xem lại bảng đặt hàng và xác nhận bằng cách gõ bất kì , nếu có sai sót hoặc muốn hủy , vui lòng nhập "Hủy"');				
+			}
+			else if(number && sacNam)
+			{
+				var orderCard = createReceiptCard(session , tenNguoiDat , sdt , 'Sạc không dây S6/S6 Edge' , 390 , number.entity , image_sacNam );
+				var msg = new builder.Message(session).addAttachment(orderCard);
+				session.send(msg);	
+				builder.Prompts.text(session , 'Vui lòng xem lại bảng đặt hàng và xác nhận bằng cách gõ bất kì , nếu có sai sót hoặc muốn hủy , vui lòng nhập "Hủy"');
+			}
+			else if(number && sacNhanh)
+			{
+				var orderCard = createReceiptCard(session , tenNguoiDat , sdt , 'Sạc nhanh chuẩn CE' , 120 , number.entity , image_sacNhanh );
+				var msg = new builder.Message(session).addAttachment(orderCard);
+				session.send(msg);
+				builder.Prompts.text(session , 'Vui lòng xem lại bảng đặt hàng và xác nhận bằng cách gõ bất kì , nếu có sai sót hoặc muốn hủy , vui lòng nhập "Hủy"');
+			}
+			else if(number && sacThuong)
+			{
+				var orderCard = createReceiptCard(session , tenNguoiDat , sdt , 'Sạc 5V 2A chuẩn CE' , 80 , number.entity , image_sacThuong );
+				var msg = new builder.Message(session).addAttachment(orderCard);
+				session.send(msg);
+				builder.Prompts.text(session , 'Vui lòng xem lại bảng đặt hàng và xác nhận bằng cách gõ bất kì , nếu có sai sót hoặc muốn hủy , vui lòng nhập "Hủy"');
+			}
+			else if(number && cap1m)
+			{
+				var orderCard = createReceiptCard(session , tenNguoiDat , sdt , 'Cáp USB Samsung 1m' , 50 , number.entity , image_cap1m );
+				var msg = new builder.Message(session).addAttachment(orderCard);
+				session.send(msg);
+				builder.Prompts.text(session , 'Vui lòng xem lại bảng đặt hàng và xác nhận bằng cách gõ bất kì , nếu có sai sót hoặc muốn hủy , vui lòng nhập "Hủy"');
+			}
+			else if(number && cap15m)
+			{
+				var orderCard = createReceiptCard(session , tenNguoiDat , sdt , 'Cáp USB Samsung 1,5m' , 60 , number.entity , image_cap15m );
+				var msg = new builder.Message(session).addAttachment(orderCard);
+				session.send(msg);
+				builder.Prompts.text(session , 'Vui lòng xem lại bảng đặt hàng và xác nhận bằng cách gõ bất kì , nếu có sai sót hoặc muốn hủy , vui lòng nhập "Hủy"');
+			}
+			else if(number && denLed)
+			{
+				var orderCard = createReceiptCard(session , tenNguoiDat , sdt , 'Đèn LED USB' , 20 , number.entity , image_denLed );
+				var msg = new builder.Message(session).addAttachment(orderCard);
+				session.send(msg);
+				builder.Prompts.text(session , 'Vui lòng xem lại bảng đặt hàng và xác nhận bằng cách gõ bất kì , nếu có sai sót hoặc muốn hủy , vui lòng nhập "Hủy"');
+			}
+			else
+			{
+				session.endDialog('Bạn vui lòng nhập đúng số lượng và tên sản phẩm nhé !');
+			}
+					
+		}
+	},
+	function(session , results)
+	{
+		if(results.response == 'Hủy' || results.response == 'HỦY' || results.response == 'hủy')
+		{
+			session.endDialog('Đã hủy đặt hàng , bạn có thể đặt lại bất cứ lúc nào ^^');
+		}
+		else
+		{
+			session.endDialog('Hoàn tất đặt hàng , Nhân viên sẽ liên hệ lại với bạn để xác nhận lần cuối, cám ơn đã ủng hộ Shop nhé ^^');
+		}
+	}]
+);
+
+
+
+
+
+function giaSp(lc)
+{
+	if(lc == DialogLabels.s7)
+		return 120;
+	if(lc == DialogLabels.asus)
+		return 100;
+	if(lc == DialogLabels.sacDung)
+		return 690;
+	if(lc == DialogLabels.sacNam)
+		return 390;
+	if(lc == DialogLabels.sacNhanh)
+		return 120;
+	if(lc == DialogLabels.sacThuong)
+		return 80;
+	if(lc == DialogLabels.cap1m)
+		return 50;
+	if(lc == DialogLabels.cap15m)
+		return 60;
+	if(lc == DialogLabels.denLed)
+		return 20;
+}
+
+function imageSp(lc)
+{
+	if(lc == DialogLabels.s7)
+		return image_S7;
+	if(lc == DialogLabels.asus)
+		return image_asus;
+	if(lc == DialogLabels.sacDung)
+		return image_sacDung;
+	if(lc == DialogLabels.sacNam)
+		return image_sacNam;
+	if(lc == DialogLabels.sacNhanh)
+		return image_sacNhanh;
+	if(lc == DialogLabels.sacThuong)
+		return image_sacThuong;
+	if(lc == DialogLabels.cap1m)
+		return image_cap1m;
+	if(lc == DialogLabels.cap15m)
+		return image_cap15m;
+	if(lc == DialogLabels.denLed)
+		return image_denLed;
+}
 	
 	
 function createHeroCard(session , message , image , url ) {
