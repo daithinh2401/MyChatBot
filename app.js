@@ -489,16 +489,15 @@ function createReceiptCard(session , tenNguoiDat , sdt, tenSp, giaSp , soluong ,
         .title(tenNguoiDat)
         .facts([
             builder.Fact.create(session, sdt , 'Điện thoại : '),
-            builder.Fact.create(session, 'Thanh toán khi nhận hàng', 'Hình thức : ')
+            builder.Fact.create(session, 'Thanh toán khi nhận hàng', 'Hình thức : '),
+			builder.Fact.create(session, 'Giá', 'Tên sản phẩm'),
         ])
         .items([
-		    builder.ReceiptItem.create(session, 'Giá', 'S.lượng ', 'Tên sản phẩm')
-				.quantity('S.lượng'),
-            builder.ReceiptItem.create(session, giaSp + ' K', soluong , tenSp)
+            builder.ReceiptItem.create(session, giaSp , soluong , tenSp)
 				.quantity(soluong)
                 .image(builder.CardImage.create(session, img))
         ])
-        .total(giaSp * soluong + ' K');
+        .total(giaSp * soluong);
 }
 
 
