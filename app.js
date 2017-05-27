@@ -373,17 +373,7 @@ intent.matches('Bye' , function (session){
 });
 
 intent.matches('None' , function (session , args){
-	var dt = builder.EntityRecognizer.findEntity(args.entities , 'đại thịnh');
-	var deptrai = builder.EntityRecognizer.findEntity(args.entities , 'Đẹp trai');
-	var nhanxet = builder.EntityRecognizer.findEntity(args.entities , 'Nhận xét');
-	if(dt && deptrai)
-	{
-		session.send('Quá đẹp trai luôn , Brad Pitt phải gọi bằng cụ :))))');
-	}
-	else if(nhanxet && dt)
-	{
-		session.send('Anh Thịnh đẹp trai , thông minh vui tính , đúng chuẩn Soái Ca !! :))))');
-	}
+	session.send('Tôi tạm thời chưa thể trả lời câu này !');
 });
 
 
