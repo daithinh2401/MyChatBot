@@ -366,7 +366,7 @@ function (session, args, next) {
 
 
 intent.matches('Greetings' , function (session){
-	session.send('Hello');
+	session.send('Chào mừng bạn đã đến với Shop - Phụ kiện điện thoại DHA , tôi là Bot trả lời tự động. Hãy nhập sản phẩm bạn cần , tôi sẽ trả lời cho bạn...... Gợi ý : nhập  " tên sản phẩm " để biết giá, nhập " tư vấn + tên sản phẩm " để nhận thông tin về sản phẩm , nhập "Help" để được trợ giúp !');
 });
 intent.matches('Bye' , function (session){
 	session.send('Cám ơn bạn đã ủng hộ !');
